@@ -1,38 +1,58 @@
-# India Real-World Forest Fire Simulator
+# Indian Forest Fire Simulator 🔥🇮🇳
 
-A highly interactive, data-driven web application for simulating realistic forest fire spread across India, powered by real-time meteorological data and mapping APIs. 
+A modern, interactive, and data-driven forest fire simulator tailored for the Indian subcontinent. Built with JavaScript, Leaflet.js, and HTML5 Canvas, this application simulates realistic fire spread mechanics based on real-time environmental data and highlights actual high-risk zones across India.
 
-## Features
+## ✨ Features
 
-- **Live Meteorological Data:** Fetches real-time temperature, humidity, wind speed, and wind direction via the Open-Meteo API when a location is selected.
-- **Cellular Automata Engine:** Simulates realistic fire spread physics at 30fps. The algorithm calculates vector-based wind influence, fuel density, fatigue over time, and natural firebreaks.
-- **Offscreen Canvas Rendering:** Highly optimized Canvas API drawing mechanism to prevent frame-rate drops when the fire grows large.
-- **Real-world Active Fires:** A built-in sidebar tab synced with sample live data representations from FSI (Forest Survey of India) and NASA FIRMS. 
-- **Land Detection:** Prevents unrealistic fire ignition in deep oceans using reverse geocoding from BigDataCloud.
-- **High-Risk Zones:** Quickly navigate to predefined, historically vulnerable forest regions in India.
+- **Interactive Cellular Automata Simulation:** Drop a fire anywhere on the map and watch it spread. The simulation calculates fire propagation using cellular automata, factoring in live wind speed, wind direction, and surrounding vegetation dynamics.
+- **Real-Time Environmental Data:** Integrates with the **Open-Meteo API** to pull live temperature, humidity, and wind conditions for any clicked coordinate.
+- **Reverse Geocoding:** Automatically resolves geographical coordinates into human-readable place names (e.g., "Bhopal, Madhya Pradesh") via the **Nominatim OpenStreetMap API**.
+- **Adjustable Ember Physics:** Control the visual size and intensity of fire embers dynamically using an interactive slider. 
+- **Windy.com Style Heatmap UI:** Features a sleek, glassmorphic overlay interface with a multi-layered Risk & Heat Map. It visualizes high-risk zones and active fire clusters using synthetic data inspired by actual **NASA FIRMS** and **FSI (Forest Survey of India)** reports.
+- **Modern Light Theme:** A highly aesthetic, clean user interface with soft drop shadows, rounded corners, and intuitive sidebar navigation.
 
-## Tech Stack
-- **Frontend:** HTML, CSS (Custom styling, modern layout), Vanilla JavaScript
-- **Mapping:** Leaflet.js with Esri World Imagery (Satellite) and Boundary overlays
-- **Build Tool:** Vite
+## 🚀 Getting Started
 
-## Installation & Running Locally
+### Prerequisites
 
-1. **Install Dependencies:**
-   Make sure you have Node.js installed, then run:
+You need Node.js and npm installed on your machine.
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/sreedharhari2006-code/forest_fire_simulator.git
+   cd forest_fire_simulator
+   ```
+
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-2. **Start the Development Server:**
+3. Start the development server:
    ```bash
    npm run dev
    ```
 
-3. **Open in Browser:**
-   Navigate to the local URL provided by Vite (e.g., `http://localhost:5173`).
+4. Open your browser and navigate to the local server address provided by Vite (usually `http://localhost:5173`).
 
-## How to Use
-- **Click Map Mode:** Simply click anywhere on the landmass of India to fetch live weather for that exact coordinate and start a fire simulation.
-- **Coordinate Mode:** Enter a precise Latitude and Longitude to ignite a fire.
-- **Simulation Report:** Watch the real-time panel on the right track the total area burned, active burning cells, and simulated duration. Once the fire hits natural exhaustion (contained), click "Start New Burn" to clear the map.
+## 🛠️ Built With
+
+- **Vite** - Frontend tooling and bundling.
+- **Vanilla JS & HTML5 Canvas** - Core simulation engine and rendering.
+- **Leaflet.js** - Interactive mapping.
+- **Leaflet.heat** - Heatmap generation.
+- **Open-Meteo API** - Live weather data.
+- **Nominatim API** - Reverse geocoding.
+
+## 🗺️ How to Use
+
+1. **Ignite a Fire**: Ensure you are in the **Simulation Map** tab. You can either click anywhere on the map or enter specific Lat/Lng coordinates in the sidebar.
+2. **Observe**: Once ignited, the app will fetch the live weather for that exact spot and immediately start simulating the fire's spread based on those conditions.
+3. **Control Embers**: Use the "Ember Size" slider in the sidebar to increase or decrease the visual intensity of the fire particles.
+4. **Analyze Risk**: Switch over to the **Risk & Heat Map** tab to view historical vulnerabilities and active hotspots using the Windy.com-inspired overlay.
+
+## 📝 License
+
+This project is open-source and available for educational and simulation purposes.
