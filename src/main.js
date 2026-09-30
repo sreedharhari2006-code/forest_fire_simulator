@@ -111,6 +111,7 @@ const CELL_SIZE = 4; // Screen pixels per simulation cell
 let simDurationTicks = 0; 
 let totalBurned = 0; 
 const HECTARES_PER_CELL = 25;
+let emberSizeMultiplier = 1.5;
 
 // Wind Particle System
 const NUM_WIND_PARTICLES = 150;
@@ -200,9 +201,15 @@ document.querySelectorAll('.side-tab').forEach(tab => {
         document.getElementById(e.target.dataset.target).classList.remove('hidden');
     });
 });
-
-// (Removed duplicate HIGH_RISK_ZONES)
-
+// Ember Size Control
+const emberSizeInput = document.getElementById('ember-size');
+const emberSizeVal = document.getElementById('ember-size-val');
+if (emberSizeInput) {
+    emberSizeInput.addEventListener('input', (e) => {
+        emberSizeMultiplier = parseFloat(e.target.value);
+        if (emberSizeVal) emberSizeVal.textContent = emberSizeMultiplier.toFixed(1) + 'x';
+    });
+}
 // Map Toggle Logic
 document.querySelectorAll('.nav-tab').forEach(tab => {
     tab.addEventListener('click', (e) => {
@@ -380,7 +387,7 @@ function drawGrid() {
             if (grid[y][x] === BURNING) {
                 const cx = x * CELL_SIZE + CELL_SIZE/2;
                 const cy = y * CELL_SIZE + CELL_SIZE/2;
-                const r = CELL_SIZE * 1.5 + (Math.random() * 2);
+                const r = CELL_SIZE * emberSizeMultiplier + (Math.random() * 2);
                 
                 const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
                 grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)'); 

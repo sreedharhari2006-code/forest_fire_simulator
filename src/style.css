@@ -251,9 +251,24 @@ body {
 .mb-2 { margin-bottom: 16px; }
 .p-2 { padding: 8px 4px 16px 4px; }
 .text-sm { font-size: 13px; }
+.font-semibold { font-weight: 600; }
 .text-muted { color: var(--text-muted); }
 .text-accent { color: var(--accent); text-decoration: none; }
 .text-accent:hover { text-decoration: underline; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+.slider-container {
+    background: #f9fafb;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.range-slider {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
 
 .header-section h1 {
     font-size: 24px;
