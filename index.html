@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>India Real-World Fire Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  </head>
+  <body>
+    <div id="app">
+        <!-- Map Container -->
+        <div id="map"></div>
+        
+        <!-- Canvas Overlay for Simulation & Wind -->
+        <canvas id="fire-canvas"></canvas>
+
+        <div id="error-toast" class="hidden">An error occurred</div>
+
+        <!-- Left Sidebar: High Risk & History -->
+        <div id="history-sidebar" class="panel">
+            <div class="sidebar-tabs">
+                <button class="side-tab active" data-target="list-live">Live FSI/NASA</button>
+                <button class="side-tab" data-target="list-highrisk">High Risk</button>
+                <button class="side-tab" data-target="list-recent">History</button>
+            </div>
+            
+            <div id="list-live" class="side-content">
+                <div class="text-sm text-muted p-2">Data sourced from <a href="https://firms.modaps.eosdis.nasa.gov/" target="_blank" class="text-accent">NASA FIRMS</a> and <a href="https://fsiforestfire.gov.in/" target="_blank" class="text-accent">FSI India</a>.</div>
+                <ul id="live-list" class="zone-list">
+                    <!-- Populated by JS -->
+                </ul>
+            </div>
+
+            <div id="list-highrisk" class="side-content hidden">
+                <ul id="highrisk-list" class="zone-list">
+                    <!-- Populated by JS -->
+                </ul>
+            </div>
+            
+            <div id="list-recent" class="side-content hidden">
+                <ul id="history-list" class="zone-list">
+                    <li class="empty-state">No fires simulated yet in this session.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right UI Overlay -->
+        <div id="ui-overlay">
+            <div class="panel">
+                <h1>🔥 Fire Simulator</h1>
+                
+                <div class="mode-selector">
+                    <label class="mode-radio">
+                        <input type="radio" name="sim-mode" value="click" checked>
+                        <span>Click Map</span>
+                    </label>
+                    <label class="mode-radio">
+                        <input type="radio" name="sim-mode" value="coords">
+                        <span>Enter Coords</span>
+                    </label>
+                </div>
+
+                <div id="mode-click-ui" class="mode-ui">
+                    <p id="instruction"><strong>Click anywhere</strong> on the map to fetch live weather data and ignite a fire instantly.</p>
+                </div>
+
+                <div id="mode-coords-ui" class="mode-ui hidden">
+                    <p class="text-sm text-muted mb-2">Enter coordinates manually, or click the map to auto-fill.</p>
+                    <div class="coord-box">
+                        <div class="coord-row">
+                            <div class="input-col">
+                                <label>Latitude</label>
+                                <input type="number" id="input-lat" step="any" value="22.9734">
+                            </div>
+                            <div class="input-col">
+                                <label>Longitude</label>
+                                <input type="number" id="input-lng" step="any" value="78.6569">
+                            </div>
+                        </div>
+                        <button id="btn-ignite-coords" class="btn primary mt-1">Fetch Data & Ignite</button>
+                    </div>
+                </div>
+                
+                <div id="weather-info" class="hidden mt-3">
+                    <h3>Live Environmental Data</h3>
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <span class="label">Location</span>
+                            <span class="value" id="loc-val">-</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="label">Temperature</span>
+                            <span class="value"><span id="temp-val">0</span> °C</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="label">Humidity</span>
+                            <span class="value"><span id="hum-val">0</span>%</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="label">Wind</span>
+                            <span class="value"><span id="wind-spd-val">0</span> km/h <span id="wind-arrow" style="display:inline-block; transition: transform 0.3s;">↑</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sim-controls" class="hidden">
+                    <button id="btn-reset" class="btn secondary mt-3">Stop Simulation</button>
+                </div>
+            </div>
+            
+            <div id="report-panel" class="panel hidden mt-3">
+                <h3>Simulation Report</h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <span class="label">Status</span>
+                        <span class="value" id="rep-status">Running</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">Area Burned</span>
+                        <span class="value"><span id="rep-area">0</span> Hectares</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">Active Fires</span>
+                        <span class="value text-burning" id="rep-active">0</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">Duration (sim)</span>
+                        <span class="value"><span id="rep-time">0</span> hrs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
