@@ -2,7 +2,7 @@
 
 The Forest Fire Preemptive Analysis System is a dynamic, browser-based simulation engine designed explicitly for government agencies, forestry departments, and disaster management task forces. 
 
-This application serves as a preemptive analysis tool. By modeling how fires propagate under real-time conditions, authorities can execute preventative measures, allocate resources efficiently, and act decisively before a forest fire escalates into an uncontrollable disaster. It combines real-time weather data, cellular automata mathematics, and interactive mapping to create a realistic forecasting environment for the Indian subcontinent.
+This application serves as a preemptive analysis tool. By modeling how fires propagate under real-time conditions, authorities can execute preventative measures, allocate resources efficiently, and act decisively before a forest fire escalates into an uncontrollable disaster. It combines real-time weather data, cellular automata mathematics, and interactive mapping to create a realistic forecasting environment for the World.
 
 ---
 
