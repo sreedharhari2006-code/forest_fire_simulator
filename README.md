@@ -1,79 +1,91 @@
- Indian Forest Fire Simulator: A Deep Dive
+# Indian Forest Fire Simulator
 
-INDIA FOREST FIRE SIMULATOR
+Welcome to the Indian Forest Fire Simulator. This project is a dynamic, browser-based simulation engine designed to model the spread of wildfires across the Indian subcontinent. It combines real-time weather data, cellular automata mathematics, and interactive mapping to create a realistic and highly interactive experience.
 
-A web app that shows how a forest fire might spread across India, using real weather at the spot where you start it.
+Whether you are a developer, an environmental researcher, or simply curious about how natural disasters propagate, this guide will walk you through exactly how the simulator works, what features are available, and how the underlying technology is structured.
 
-Click anywhere on the map and the app pulls the current temperature, humidity, wind speed and wind direction for that location. Then it lets a fire loose and shows you what the wind and terrain do to it.
+---
 
+## Core Features and Mechanics
 
-WHAT IT DOES
+### The Dual-Map Interface
+The application is split into two distinct visual interfaces, allowing you to both simulate new fires and analyze existing risk zones.
 
-The app uses live weather. When you pick a spot, it fetches current conditions from Open-Meteo, so the same place can burn differently on a calm day and on a windy one.
+1. **The Simulation Map**
+This is your interactive laboratory. It uses a high-resolution satellite base layer, allowing you to see the actual topography and vegetation of India. In this view, you can ignite fires and watch the cellular automata engine calculate the spread in real-time.
 
-It simulates fire spread. The map is a grid of cells that catch fire from their neighbours. Wind pushes the fire downwind, denser fuel burns harder, cells burn out over time, and natural firebreaks can slow or stop the fire.
+2. **The Risk and Heat Map**
+By toggling to the second map via the sidebar, the interface transforms into a data visualization dashboard. We built a custom overlay featuring a gradient legend that ranks areas from "Safe" to "Critical Fire." Instead of broad, inaccurate heat zones, the map uses custom clustering algorithms to tightly concentrate data points over actual high-risk areas. This data structure was inspired by active fire reports from NASA FIRMS (Fire Information for Resource Management System) and the Forest Survey of India.
 
-It stays smooth. The simulation runs at around 30 frames per second, and drawing happens on an offscreen canvas so large fires don't make it lag.
+### Live Weather Integration
+A fire's behavior is dictated by its environment. When you initiate a fire on the map, the simulator immediately contacts the Open-Meteo API. It passes the exact latitude and longitude of your chosen location and retrieves current environmental data, including:
+- Temperature
+- Relative Humidity
+- Wind Speed
+- Wind Direction
 
-It won't light the ocean. The app checks the location first using BigDataCloud and refuses to start a fire in deep water.
+This data is not just for display; it is actively fed into the simulation engine. A fire ignited in a humid, still environment will behave entirely differently than a fire caught in a dry, high-speed windstorm.
 
-It shows active fires. A sidebar tab has sample data modelled on FSI (Forest Survey of India) and NASA FIRMS.
+### Reverse Geocoding
+Raw coordinates can be difficult to interpret. To make the interface more intuitive, the application utilizes the Nominatim OpenStreetMap API. When a fire is ignited, the engine translates the raw coordinates into a human-readable location name (for example, "Bhopal, Madhya Pradesh") and logs it in your active session history.
 
-It has shortcuts to risky regions. You can jump to forest areas in India that are known to be fire-prone.
+### Ember and Particle Physics
+The fire spread is visually represented using an advanced particle system rendered on an HTML5 Canvas. We have included an interactive "Ember Size" slider in the sidebar. This slider allows you to manually control the visual intensity and radius of the glowing fire particles in real-time as the simulation runs.
 
+---
 
-BUILT WITH
+## How the Simulation Engine Works
 
-HTML, CSS and vanilla JavaScript
-Leaflet.js for the map, with Esri satellite imagery and boundary overlays
-Vite as the build tool
+The core of the fire spread logic is built on a mathematical model known as Cellular Automata. Here is a breakdown of how it calculates the spread:
 
+1. **Grid Generation**
+The visible map is divided into an invisible grid. Each cell in this grid represents a specific area of land.
 
-RUNNING IT LOCALLY
+2. **Environmental States**
+At any given moment, a cell can exist in one of three states:
+- Unburned: The forest is healthy and contains fuel for a potential fire.
+- Burning: The cell is actively on fire, emitting heat, and capable of spreading the fire to adjacent cells.
+- Burned Out: The fuel has been entirely consumed, meaning the fire can no longer exist or spread through this specific cell.
 
-You will need Node.js installed. Then run these commands one after another:
+3. **Spread Probability and Wind Vectoring**
+Fire rarely spreads in a perfect circle. The engine calculates the angle between a currently burning cell and its unburned neighbors. It then factors in the live wind direction and wind speed pulled from the API. Cells that lie in the path of the wind are assigned a significantly higher "Spread Probability," causing the virtual fire to dynamically leap and elongate in the direction of the wind, mimicking real-world physics.
 
+---
+
+## Technical Architecture
+
+This project was built to be lightweight, fast, and visually polished without relying on bloated frameworks. 
+
+- **Frontend Build Tool:** Vite is used for bundling and development, ensuring fast server starts and hot module replacement.
+- **Styling:** The user interface is built with pure Vanilla CSS. We implemented a custom light-theme design system using CSS variables, flexbox, and backdrop-filters to create a premium, glassmorphic aesthetic.
+- **Mapping Engine:** Leaflet.js handles the interactive mapping and zooming mechanics.
+- **Heatmaps:** The leaflet.heat plugin is used to render the Risk Map, heavily customized to render tight, localized data clusters.
+- **Rendering Engine:** Vanilla JavaScript interacts directly with the HTML5 Canvas API. This ensures the simulation can render thousands of individual fire cells at 60 frames per second without causing browser lag.
+
+---
+
+## Setup and Installation
+
+If you would like to run the simulator locally, follow these steps:
+
+1. **Clone the repository:**
+Download the code to your local machine using git.
+```bash
 git clone https://github.com/sreedharhari2006-code/forest_fire_simulator.git
 cd forest_fire_simulator
+```
+
+2. **Install dependencies:**
+Ensure you have Node.js installed, then run the package manager to install the required libraries.
+```bash
 npm install
+```
+
+3. **Start the development server:**
+Launch the Vite server to run the application locally.
+```bash
 npm run dev
+```
 
-Vite will print a local address, usually http://localhost:5173. Open that in your browser.
-
-You will need an internet connection, since the weather data, map tiles and location checks all come from online services.
-
-
-HOW TO USE IT
-
-There are two ways to start a fire.
-
-1. Click the map. Click any point on India's land and the fire starts there, using that spot's live weather.
-
-2. Enter coordinates. Type in an exact latitude and longitude if you know where you want to start.
-
-Once the fire is burning, the panel on the right keeps count of the area burned, the number of cells still on fire, and how much time has passed in the simulation. When the fire dies out, click "Start New Burn" to clear the map and try somewhere else.
-
-
-
-
-CONTRIBUTING
-
-Ideas and pull requests are welcome. Fork the repo, make your changes on a branch, and open a pull request. If you're not sure where to start, opening an issue to talk it through works too.
-
-Some things that would be nice to add:
-- Real NASA FIRMS data instead of samples
-- Terrain slope and elevation in the spread model
-- Adjustable simulation speed
-- Exportable reports
-
-
-LICENSE
-
-Not added yet. If you want others to reuse the code, add a LICENSE file (MIT is a common choice).
-
-
-AUTHOR
-
-Made by sreedharhari2006-code
-https://github.com/sreedharhari2006-code
-*Built with passion, data, and a whole lot of JavaScript.* 🌳🔥
+4. **Access the application:**
+Open your web browser and navigate to the local address provided by the terminal (typically http://localhost:5173).
