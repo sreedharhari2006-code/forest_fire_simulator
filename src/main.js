@@ -298,6 +298,8 @@ document.querySelectorAll('input[name="sim-mode"]').forEach(radio => {
 
 async function fetchWeather(lat, lng) {
     try {
+        document.getElementById('loc-val').innerText = "Locating...";
+        
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m`);
         if (!res.ok) throw new Error("API failed");
         
@@ -309,8 +311,27 @@ async function fetchWeather(lat, lng) {
         env.windSpeed = current.wind_speed_10m;
         env.windDir = current.wind_direction_10m;
         
+        // Fetch place name via Nominatim Reverse Geocoding
+        let placeName = `${parseFloat(lat).toFixed(2)}, ${parseFloat(lng).toFixed(2)}`;
+        try {
+            const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10&addressdetails=1`);
+            if (geoRes.ok) {
+                const geoData = await geoRes.json();
+                if (geoData.address) {
+                    const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.county || geoData.address.state_district;
+                    const state = geoData.address.state || geoData.address.country;
+                    if (city && state) placeName = `${city}, ${state}`;
+                    else if (state) placeName = state;
+                    else if (geoData.name) placeName = geoData.name;
+                }
+            }
+        } catch(e) {
+            console.error("Geocoding failed", e);
+        }
+        
         // Update UI
-        document.getElementById('loc-val').innerText = `${parseFloat(lat).toFixed(2)}, ${parseFloat(lng).toFixed(2)}`;
+        document.getElementById('loc-val').innerText = placeName;
+        document.getElementById('loc-val').title = `${parseFloat(lat).toFixed(4)}, ${parseFloat(lng).toFixed(4)}`;
         document.getElementById('temp-val').innerText = env.temp;
         document.getElementById('hum-val').innerText = env.humidity;
         document.getElementById('wind-spd-val').innerText = env.windSpeed;
@@ -327,7 +348,7 @@ async function fetchWeather(lat, lng) {
         const emptyState = historyList.querySelector('.empty-state');
         if(emptyState) emptyState.remove();
         const li = document.createElement('li');
-        li.innerHTML = `<strong>${parseFloat(lat).toFixed(3)}, ${parseFloat(lng).toFixed(3)}</strong><br><span class="text-muted text-sm">Temp: ${env.temp}°C | Wind: ${env.windSpeed}km/h</span>`;
+        li.innerHTML = `<strong>${placeName}</strong><br><span class="text-muted text-sm">Temp: ${env.temp}°C | Wind: ${env.windSpeed}km/h</span>`;
         historyList.prepend(li);
         
     } catch(e) {
