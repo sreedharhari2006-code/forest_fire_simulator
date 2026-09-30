@@ -67,30 +67,31 @@ function addCluster(centerLat, centerLng, radius, count, intensity) {
 }
 
 // Central/Eastern India (High Vulnerability)
-addCluster(22.0, 81.0, 8, 400, 0.8); // MP / Chhattisgarh
-addCluster(20.5, 84.5, 5, 200, 0.9); // Odisha
-addCluster(19.0, 79.0, 6, 150, 0.7); // Maharashtra
-addCluster(17.0, 80.0, 5, 100, 0.6); // Andhra
-addCluster(24.0, 85.0, 4, 120, 0.8); // Jharkhand
+addCluster(22.0, 81.0, 3.0, 300, 0.8); // MP / Chhattisgarh
+addCluster(20.5, 84.5, 2.0, 150, 0.9); // Odisha
+addCluster(19.0, 79.0, 2.5, 120, 0.7); // Maharashtra
+addCluster(17.0, 80.0, 2.0, 100, 0.6); // Andhra
+addCluster(24.0, 85.0, 1.5, 120, 0.8); // Jharkhand
 
 // Himalayas / North
-addCluster(30.0, 79.0, 3, 80, 0.6); // Uttarakhand
-addCluster(32.0, 76.0, 2, 50, 0.5); // Himachal
+addCluster(30.0, 79.0, 1.2, 80, 0.6); // Uttarakhand
+addCluster(32.0, 76.0, 1.0, 50, 0.5); // Himachal
 
 // Northeast
-addCluster(26.0, 92.0, 4, 100, 0.7); // Assam / Meghalaya
-addCluster(23.5, 93.0, 2, 40, 0.6); // Mizoram
+addCluster(26.0, 92.0, 2.0, 100, 0.7); // Assam / Meghalaya
+addCluster(23.5, 93.0, 1.0, 50, 0.6); // Mizoram
 
 // Add the actual exact coordinates from our database to the heatmap
-HIGH_RISK_ZONES.forEach(zone => heatData.push([zone.lat, zone.lng, 0.9]));
+HIGH_RISK_ZONES.forEach(zone => heatData.push([zone.lat, zone.lng, 1.0]));
 LIVE_FIRES.forEach(zone => heatData.push([zone.lat, zone.lng, 1.0]));
 
 // Create the Native Leaflet Heatmap Layer
 L.heatLayer(heatData, {
-    radius: 45,
-    blur: 35,
+    radius: 18,
+    blur: 15,
     maxZoom: 9,
-    gradient: {0.4: 'yellow', 0.65: 'orange', 1: 'red'}
+    max: 1.0,
+    gradient: {0.1: '#3b82f6', 0.4: '#10b981', 0.6: '#eab308', 0.8: '#ef4444', 1.0: '#7f1d1d'}
 }).addTo(riskMap);
 
 // Sync panning and zooming between the two maps
