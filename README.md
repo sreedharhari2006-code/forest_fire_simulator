@@ -2,7 +2,7 @@
 
 Welcome to the Indian Forest Fire Simulator. This project is a dynamic, browser-based simulation engine designed to model the spread of wildfires across the Indian subcontinent. It combines real-time weather data, cellular automata mathematics, and interactive mapping to create a realistic and highly interactive experience.
 
-Whether you are a developer, an environmental researcher, or simply curious about how natural disasters propagate, this guide will walk you through exactly how the simulator works, what features are available, and how the underlying technology is structured.
+Designed explicitly for government agencies, forestry departments, and disaster management task forces, this application serves as a preemptive analysis tool. By understanding how fires propagate under real-time conditions, authorities can execute preventative measures, allocate resources efficiently, and act decisively before a forest fire escalates into an uncontrollable disaster.
 
 ---
 
