@@ -16,6 +16,28 @@
         </div>
         <div id="map-risk-container" class="map-wrapper hidden-map">
             <div id="map-risk"></div>
+            <!-- Windy-style UI for Heatmap -->
+            <div id="windy-ui">
+                <!-- Right side layer controls -->
+                <div class="windy-layers">
+                    <button class="layer-pill"><span class="layer-icon" style="background: #3b82f6;"></span>Weather radar</button>
+                    <button class="layer-pill"><span class="layer-icon" style="background: #10b981;"></span>Satellite</button>
+                    <button class="layer-pill"><span class="layer-icon" style="background: #eab308;"></span>Wind</button>
+                    <button class="layer-pill active"><span class="layer-icon" style="background: linear-gradient(135deg, #ef4444, #eab308);"></span>Hotspots</button>
+                    <button class="layer-pill"><span class="layer-icon" style="background: #a8a29e;"></span>Clouds</button>
+                </div>
+                
+                <!-- Bottom right legend -->
+                <div class="windy-legend">
+                    <div class="legend-bar"></div>
+                    <div class="legend-labels">
+                        <span>Safe</span>
+                        <span>Moderate</span>
+                        <span>High Risk</span>
+                        <span>Critical Fire</span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="error-toast" class="hidden">An error occurred</div>
 
